@@ -305,130 +305,14 @@
     });
   }
 
-  /* ---------- Enquiry (3-step brief) ---------- */
-  const dlg = $('#enquiry');
-  const form = $('[data-enquiry-form]');
-  if (dlg && form && typeof dlg.showModal === 'function') {
-    const stepsEls = $$('[data-step]', form);
-    const progress = $$('[data-progress]', form);
-    const nextBtn = $('[data-next]', form);
-    const prevBtn = $('[data-prev]', form);
-    const countLabel = $('[data-count-label]', form);
-    const done = $('[data-done]', form);
-    let current = 1;
-    let started = false;
-    let submitted = false;
-
-    const show = (n) => {
-      current = n;
-      stepsEls.forEach((s) => {
-        const on = +s.dataset.step === n;
-        s.hidden = !on;
-        if (on) { s.classList.remove('is-entering'); void s.offsetWidth; s.classList.add('is-entering'); }
-      });
-      progress.forEach((p) => {
-        const k = +p.dataset.progress;
-        p.classList.toggle('is-current', k === n);
-        p.classList.toggle('is-done', k < n);
-        if (k === n) p.setAttribute('aria-current', 'step'); else p.removeAttribute('aria-current');
-      });
-      prevBtn.hidden = n === 1;
-      $('.btn__label', nextBtn).textContent = n === stepsEls.length ? 'Send project brief' : 'Continue';
-      countLabel.textContent = `Step ${n} of ${stepsEls.length}`;
-    };
-
-    const setError = (input, msg) => {
-      const errId = input.type === 'radio' ? 'stage-err' : `${input.id}-err`;
-      const err = document.getElementById(errId);
-      if (input.type !== 'radio') {
-        input.setAttribute('aria-invalid', msg ? 'true' : 'false');
-        if (err) input.setAttribute('aria-describedby', errId);
-      }
-      if (err) err.textContent = msg || '';
-    };
-
-    const validate = (n) => {
-      const step = stepsEls[n - 1];
-      let firstBad = null;
-      const checkedRadios = new Set();
-      $$('[required]', step).forEach((input) => {
-        let msg = '';
-        if (input.type === 'radio') {
-          if (checkedRadios.has(input.name)) return;
-          checkedRadios.add(input.name);
-          if (!$(`input[name="${input.name}"]:checked`, step)) msg = 'Please select the stage your project is at.';
-        } else if (!input.value.trim()) {
-          const label = $(`label[for="${input.id}"]`, step);
-          msg = `Please enter your ${(label ? label.textContent.replace('*', '').trim() : 'details').toLowerCase()}.`;
-        } else if (input.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value)) {
-          msg = 'Please enter a valid email address, e.g. name@company.co.uk.';
-        } else if (input.type === 'tel' && input.value.replace(/\D/g, '').length < 10) {
-          msg = 'Please enter a valid phone number, including area code.';
-        }
-        setError(input, msg);
-        if (msg && !firstBad) firstBad = input;
-      });
-      if (firstBad) firstBad.focus();
-      return !firstBad;
-    };
-
-    const open = (step = 1) => {
-      if (submitted) { submitted = false; form.reset(); dlg.classList.remove('is-done'); done.hidden = true; }
-      show(step);
-      dlg.showModal();
-      document.body.classList.add('dialog-open');
-      track('enquiry_open', { step });
-    };
-
-    $$('[data-open-enquiry]').forEach((el) => el.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (menuBtn.getAttribute('aria-expanded') === 'true') setMenu(false);
-      open(parseInt(el.dataset.enquiryStep || '1', 10));
-    }));
-    $$('[data-close-enquiry]', dlg).forEach((b) => b.addEventListener('click', () => dlg.close()));
-    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
-    dlg.addEventListener('close', () => {
-      document.body.classList.remove('dialog-open');
-      if (started && !submitted) track('form_abandoned', { step: current });
-    });
-
-    form.addEventListener('input', (e) => {
-      if (!started) { started = true; track('form_started'); }
-      if (e.target.getAttribute('aria-invalid') === 'true') setError(e.target, '');
-      if (e.target.name === 'stage') setError(e.target, '');
-      // live floor area readout
-      if (['width', 'length'].includes(e.target.name)) {
-        const w = parseFloat(form.elements.namedItem('width').value), l = parseFloat(form.elements.namedItem('length').value);
-        const hint = $('[data-area]', form);
-        if (w > 0 && l > 0) {
-          const m2 = w * l;
-          hint.textContent = `Approx. floor area: ${Math.round(m2).toLocaleString('en-GB')} m² · ${Math.round(m2 * 10.7639).toLocaleString('en-GB')} sq ft`;
-        } else hint.textContent = "Not sure yet? Leave dimensions blank — we'll help size it.";
-      }
-    });
-    form.elements.namedItem('drawings').addEventListener('change', () => {
-      const files = [...form.elements.namedItem('drawings').files];
-      $('[data-files]', form).textContent = files.length ? `${files.length} file${files.length > 1 ? 's' : ''} attached: ${files.map((f) => f.name).join(', ')}` : '';
-      if (files.length) track('plans_uploaded', { count: files.length });
-    });
-    prevBtn.addEventListener('click', () => show(current - 1));
-
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (!validate(current)) return;
-      track('form_step_completed', { step: current });
-      if (current < stepsEls.length) { show(current + 1); $('.enquiry__body', form).scrollTop = 0; return; }
-      // Final submit — replace with POST to enquiry endpoint / Pipedrive webhook
-      submitted = true;
-      track('form_submitted', { building_type: form.elements.namedItem('building_type').value, budget: form.elements.namedItem('budget').value, stage: (form.elements.namedItem('stage').value || '') });
-      stepsEls.forEach((s) => (s.hidden = true));
-      dlg.classList.add('is-done');
-      done.hidden = false;
-      const mark = $('.drawing', done);
-      mark.classList.remove('is-in'); void mark.offsetWidth; mark.classList.add('is-in');
-      done.focus();
-    });
-  }
+  /* ---------- Attribution: remember how the visitor arrived, for the quote form ---------- */
+  try {
+    if (!sessionStorage.getItem('wsb-attrib')) {
+      const q = new URLSearchParams(location.search); const a = { landing_page: location.href, referrer: document.referrer || '' };
+      ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid'].forEach((k) => { if (q.get(k)) a[k] = q.get(k); });
+      sessionStorage.setItem('wsb-attrib', JSON.stringify(a));
+    }
+  } catch (e) { /* storage unavailable */ }
 
   /* ---------- Footer year ---------- */
   const yr = $('[data-year]');

@@ -98,7 +98,7 @@
 
     <div class="header-actions">
       <a class="header-phone" href="tel:+441782898104" data-track="phone_click"><svg><use href="#i-phone"/></svg><span>01782 898104</span></a>
-      <a class="btn btn--primary btn--sm" href="#enquire" data-open-enquiry data-track="quote_cta" data-track-location="header">
+      <a class="btn btn--primary btn--sm" href="quote.html" data-track="quote_cta" data-track-location="header">
         <span class="btn__label">Get a Quote</span>
         <span class="btn__icon" aria-hidden="true"><svg><use href="#i-arrow"/></svg><svg><use href="#i-arrow"/></svg></span>
       </a>
@@ -180,7 +180,7 @@
     <a class="m-link" href="#delivery">How We Deliver</a>
     <a class="m-link" href="/about-us/">About</a>
     <div class="mobile-menu__foot">
-      <a class="btn btn--primary btn--block" href="#enquire" data-open-enquiry data-track="quote_cta" data-track-location="mobile_menu"><span class="btn__label">Discuss Your Project</span><span class="btn__icon" aria-hidden="true"><svg><use href="#i-arrow"/></svg><svg><use href="#i-arrow"/></svg></span></a>
+      <a class="btn btn--primary btn--block" href="quote.html" data-track="quote_cta" data-track-location="mobile_menu"><span class="btn__label">Discuss Your Project</span><span class="btn__icon" aria-hidden="true"><svg><use href="#i-arrow"/></svg><svg><use href="#i-arrow"/></svg></span></a>
       <a class="m-phone" href="tel:+441782898104" data-track="phone_click"><svg><use href="#i-phone"/></svg>01782 898104</a>
     </div>
   </nav>
@@ -207,7 +207,7 @@
     <div class="hero__lower">
       <p class="hero__lede" data-hero-in style="--d:.75s">From workshops and industrial units to large commercial buildings, Wedgewood designs and delivers hot-rolled and cold-rolled steel building solutions across the UK.</p>
       <div class="hero__ctas" data-hero-in style="--d:.9s">
-        <a class="btn btn--primary btn--lg" href="#enquire" data-open-enquiry data-track="quote_cta" data-track-location="hero">
+        <a class="btn btn--primary btn--lg" href="quote.html" data-track="quote_cta" data-track-location="hero">
           <span class="btn__label">Discuss Your Project</span>
           <span class="btn__icon" aria-hidden="true"><svg><use href="#i-arrow"/></svg><svg><use href="#i-arrow"/></svg></span>
         </a>
@@ -761,7 +761,7 @@
     <h2 id="cta-title" class="display display--cta" data-split>Planning a steel building project?</h2>
     <p class="cta__lede" data-reveal style="--i:2">Tell us what you're looking to build and our team can discuss the most suitable route for your project.</p>
     <div class="cta__actions" data-reveal style="--i:3">
-      <a class="btn btn--primary btn--lg" href="#enquire" data-open-enquiry data-track="quote_cta" data-track-location="final_cta">
+      <a class="btn btn--primary btn--lg" href="quote.html" data-track="quote_cta" data-track-location="final_cta">
         <span class="btn__label">Discuss Your Project</span>
         <span class="btn__icon" aria-hidden="true"><svg><use href="#i-arrow"/></svg><svg><use href="#i-arrow"/></svg></span>
       </a>
@@ -859,127 +859,8 @@
 <!-- Mobile persistent CTA -->
 <div class="mobile-bar" data-mobile-bar aria-hidden="true">
   <a href="tel:+441782898104" class="mobile-bar__call" data-track="phone_click" tabindex="-1"><svg><use href="#i-phone"/></svg>Call</a>
-  <a href="#enquire" class="mobile-bar__quote" data-open-enquiry data-track="quote_cta" data-track-location="mobile_bar" tabindex="-1">Get a Quote <svg><use href="#i-arrow"/></svg></a>
+  <a href="quote.html" class="mobile-bar__quote" data-track="quote_cta" data-track-location="mobile_bar" tabindex="-1">Get a Quote <svg><use href="#i-arrow"/></svg></a>
 </div>
-
-<!-- =========================================================
-     ENQUIRY — 3-step project brief (modal)
-     ========================================================= -->
-<dialog class="enquiry" id="enquiry" aria-labelledby="enquiry-title">
-  <form class="enquiry__form" novalidate data-enquiry-form>
-    <header class="enquiry__head">
-      <div>
-        <p class="label">Project brief</p>
-        <h2 id="enquiry-title" class="enquiry__title">Discuss your project</h2>
-      </div>
-      <button type="button" class="enquiry__close" data-close-enquiry aria-label="Close"><svg><use href="#i-close"/></svg></button>
-    </header>
-
-    <ol class="enquiry__progress" aria-label="Progress">
-      <li class="is-current" data-progress="1"><span class="mono">01</span> Building</li>
-      <li data-progress="2"><span class="mono">02</span> Project</li>
-      <li data-progress="3"><span class="mono">03</span> Contact</li>
-    </ol>
-
-    <div class="enquiry__body">
-      <!-- Step 1 -->
-      <fieldset class="enquiry__step" data-step="1">
-        <legend class="sr-only">Step 1 of 3: The building</legend>
-        <div class="field field--full">
-          <label for="f-type">Building type <span aria-hidden="true">*</span></label>
-          <select id="f-type" name="building_type" required>
-            <option value="">Select a building type</option>
-            <option>Industrial building</option><option>Industrial unit(s)</option><option>Warehouse</option>
-            <option>Commercial building</option><option>Manufacturing / factory</option><option>Workshop</option>
-            <option>Vehicle workshop</option><option>Storage building</option><option>Building extension</option><option>Other / not sure</option>
-          </select>
-          <p class="field__error" id="f-type-err"></p>
-        </div>
-        <div class="field field--full">
-          <label for="f-use">Intended use</label>
-          <input id="f-use" name="intended_use" type="text" placeholder="e.g. CNC machining, pallet storage, 4 x trade units">
-        </div>
-        <div class="field-row">
-          <div class="field"><label for="f-w">Width <span class="unit">m</span></label><input id="f-w" name="width" type="number" inputmode="decimal" min="0" step="0.1"></div>
-          <div class="field"><label for="f-l">Length <span class="unit">m</span></label><input id="f-l" name="length" type="number" inputmode="decimal" min="0" step="0.1"></div>
-          <div class="field"><label for="f-e">Eaves height <span class="unit">m</span></label><input id="f-e" name="eaves" type="number" inputmode="decimal" min="0" step="0.1"></div>
-        </div>
-        <p class="field__hint" data-area aria-live="polite">Not sure yet? Leave dimensions blank — we'll help size it.</p>
-        <div class="field field--full">
-          <label for="f-pc">Project postcode / location <span aria-hidden="true">*</span></label>
-          <input id="f-pc" name="postcode" type="text" autocomplete="postal-code" required>
-          <p class="field__error" id="f-pc-err"></p>
-        </div>
-      </fieldset>
-
-      <!-- Step 2 -->
-      <fieldset class="enquiry__step" data-step="2" hidden>
-        <legend class="sr-only">Step 2 of 3: The project</legend>
-        <div class="field field--full">
-          <span class="field__label" id="stage-label">Project stage <span aria-hidden="true">*</span></span>
-          <div class="chips" role="radiogroup" aria-labelledby="stage-label">
-            <label class="chip"><input type="radio" name="stage" value="exploring" required><span>Exploring options</span></label>
-            <label class="chip"><input type="radio" name="stage" value="planning"><span>Planning the project</span></label>
-            <label class="chip"><input type="radio" name="stage" value="submitted"><span>Planning submitted</span></label>
-            <label class="chip"><input type="radio" name="stage" value="approved"><span>Planning approved</span></label>
-            <label class="chip"><input type="radio" name="stage" value="ready"><span>Ready for quotations</span></label>
-            <label class="chip"><input type="radio" name="stage" value="drawings"><span>Existing drawings / specification</span></label>
-          </div>
-          <p class="field__error" id="stage-err"></p>
-        </div>
-        <div class="field-row field-row--2">
-          <div class="field">
-            <label for="f-start">Expected start</label>
-            <select id="f-start" name="start"><option value="">Select</option><option>Within 3 months</option><option>3–6 months</option><option>6–12 months</option><option>12 months +</option><option>Not sure yet</option></select>
-          </div>
-          <div class="field">
-            <label for="f-budget">Approximate budget</label>
-            <select id="f-budget" name="budget"><option value="">Select</option><option>Under £50k</option><option>£50k – £100k</option><option>£100k – £200k</option><option>£200k – £500k</option><option>£500k +</option><option>Not sure yet</option></select>
-          </div>
-        </div>
-        <div class="field field--full">
-          <label class="upload" for="f-files">
-            <svg><use href="#i-clip"/></svg>
-            <span><strong>Upload drawings</strong> <span class="upload__sub">PDF, DWG, JPG — up to 20MB</span></span>
-            <input id="f-files" name="drawings" type="file" multiple accept=".pdf,.dwg,.dxf,.jpg,.jpeg,.png">
-          </label>
-          <p class="field__hint" data-files aria-live="polite"></p>
-        </div>
-        <div class="field field--full">
-          <label for="f-info">Additional information</label>
-          <textarea id="f-info" name="info" rows="3"></textarea>
-        </div>
-      </fieldset>
-
-      <!-- Step 3 -->
-      <fieldset class="enquiry__step" data-step="3" hidden>
-        <legend class="sr-only">Step 3 of 3: Your details</legend>
-        <div class="field-row field-row--2">
-          <div class="field"><label for="f-name">Name <span aria-hidden="true">*</span></label><input id="f-name" name="name" autocomplete="name" required><p class="field__error" id="f-name-err"></p></div>
-          <div class="field"><label for="f-co">Company</label><input id="f-co" name="company" autocomplete="organization"></div>
-        </div>
-        <div class="field-row field-row--2">
-          <div class="field"><label for="f-email">Email <span aria-hidden="true">*</span></label><input id="f-email" name="email" type="email" autocomplete="email" required><p class="field__error" id="f-email-err"></p></div>
-          <div class="field"><label for="f-tel">Phone <span aria-hidden="true">*</span></label><input id="f-tel" name="phone" type="tel" autocomplete="tel" required><p class="field__error" id="f-tel-err"></p></div>
-        </div>
-        <p class="field__hint">We'll only use your details to respond to this enquiry.</p>
-      </fieldset>
-
-      <!-- Success -->
-      <div class="enquiry__done" data-done hidden tabindex="-1">
-        <svg class="drawing drawing--ink done-mark" viewBox="0 0 80 80" fill="none" aria-hidden="true"><circle class="draw" cx="40" cy="40" r="34"/><path class="draw accent" d="m26 41 9 9 19-20"/></svg>
-        <h3>Thanks — your brief is with our team.</h3>
-        <p>We'll review the details and be in touch, usually within one working day. For anything urgent call <a href="tel:+441782898104">01782 898104</a>.</p>
-      </div>
-    </div>
-
-    <footer class="enquiry__foot">
-      <button type="button" class="btn btn--text" data-prev hidden>Back</button>
-      <p class="enquiry__count mono" aria-live="polite" data-count-label>Step 1 of 3</p>
-      <button type="submit" class="btn btn--primary" data-next><span class="btn__label">Continue</span><span class="btn__icon" aria-hidden="true"><svg><use href="#i-arrow"/></svg><svg><use href="#i-arrow"/></svg></span></button>
-    </footer>
-  </form>
-</dialog>
 
 <script src="assets/js/main.js" defer></script>
 </body>
